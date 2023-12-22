@@ -1,0 +1,16 @@
+﻿
+@model IEnumerable<Model3D>
+
+<div class="row">
+    @foreach (var model3d in Model)
+    {
+        <a class="col-md-3" asp-area="" asp-page="/Model3D" asp-route-id="@model3d.Model3DID">
+            <img src="/img/models/@model3d.ImageSource" class="card-img-top">
+            <div class="card">
+                <div class="card-body">
+                    @model3d.Title
+                </div>
+            </div>
+        </a>
+    }
+</div>
