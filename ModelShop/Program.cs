@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ModelShop.Data;
+using ModelShop.Data.Contracts;
+using ModelShop.Data.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,11 @@ builder.Services.AddControllersWithViews();
 // Add database context
 builder.Services.AddDbContext<ModelShopContext>((options) =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ModelShopContext")));
+
+// Add repositories
+builder.Services.AddScoped<IModel3DRepository, Model3DRepository>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IModelCategoryRepository, ModelCategoryRepository>();
 
 
 var app = builder.Build();

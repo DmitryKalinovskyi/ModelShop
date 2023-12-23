@@ -8,20 +8,30 @@ namespace ModelShop.Models
         [Key]
         public int Model3DID { get; set; }
 
-        public string Title { get; set; }
+        [MinLength(3)]
+        [MaxLength(50)]
+        public string? Title { get; set; }
 
+        [MaxLength(20)]
         public string? ImageSource { get; set; }
 
         public decimal Price { get; set; }
 
-        public string Description { get; set; }
+        [MaxLength(200)]
+        public string? Description { get; set; }
+        
+        public DateTime? CreatedDate { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        [ForeignKey("ModelCategoryID")]
+        public int? ModelCategoryID { get; set; }
 
-        [ForeignKey("ModelCategory")]
-        public int ModelCategoryID { get; set; }
+        [ForeignKey("OwnerID")]
+        public int? OwnerID { get; set; }
 
         // reference navigation
         public ModelCategory? ModelCategory { get; set; }
+
+        public Client? Owner { get; set; }
+
     }
 }

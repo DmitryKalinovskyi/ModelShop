@@ -1,0 +1,108 @@
+﻿@model Model3D
+
+<script src="~/js/model3d-view.js" defer></script>
+@*
+<div class="download-context-menu" style="visibility: hidden">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">ещ
+                <div class="col-6 d-flex align-items-center">Download</div>
+                <div class="col-6 d-flex flex-row-reverse">
+                    <button class="toggle-download btn btn-primary">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            Avaible formats
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <div class="fs-6">
+                                .fbx 3MB
+                            </div>
+                        </div>
+                        <button class="btn btn-primary"> download </button>
+                    </div>
+
+                </li>
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <div class="fs-6">
+                                .obj 2.3MB
+                            </div>
+                        </div>
+                        <button class="btn btn-primary"> download </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>*@
+
+<div class="container">
+    <div class="row">
+        <div class="col-9">
+            <div>
+                <img class="w-50" src="~/img/models/m1.jpeg">
+            </div>
+            <div>
+                <h4>
+                    @Model.Title
+                </h4>
+            </div>
+            <div>
+                <span>@Model.Price$</span>
+                <!-- if not owned -->
+                <button class="btn btn-primary">Add to cart</button>
+
+                <!-- if owned -->
+                <button class="toggle-download btn btn-primary ">Download model</button>
+            </div>
+            <hr>
+            <div>
+                @Model.Description
+            </div>
+            <div class="flex">
+                <i class="bi bi-clock"></i>
+                @Model.CreatedDate
+            </div>
+            <div class="flex">
+                <i class="bi bi-tag"></i>
+                @Model.ModelCategory.Name
+            </div>
+            <hr>
+
+            <!-- comments -->
+            @*<div>
+                <div class="comments-title">
+                    <h5>
+                        1 comment
+                    </h5>
+                </div>
+                <div class="comment">
+                    <div><a href="profilepage" class="text-decoration-none">author</a></div>
+                    <small>4 days ago</small>
+                    <div class="comment-body">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro perferendis similique est doloribus numquam, nostrum necessitatibus neque totam cum velit minima praesentium laboriosam dolor eos fugiat accusamus reiciendis obcaecati magnam!
+                    </div>
+                </div>
+                <hr>
+                <div class="comment">
+                    <div><a href="profilepage" class="text-decoration-none">author</a></div>
+                    <small>4 days ago</small>
+                    <div class="comment-body">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro perferendis similique est doloribus numquam, nostrum necessitatibus neque totam cum velit minima praesentium laboriosam dolor eos fugiat accusamus reiciendis obcaecati magnam!
+                    </div>
+                </div>
+            </div>*@
+        </div>
+        <!-- remendation tab -->
+        <!-- <div class="col-3">
+            hello
+        </div> -->
+    </div>
+</div>

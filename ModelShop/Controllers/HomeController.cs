@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ModelShop.Data;
+using ModelShop.Data.Contracts;
 using ModelShop.Models;
 using System.Diagnostics;
 
@@ -8,12 +9,15 @@ namespace ModelShop.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ModelShopContext _context;
+        private readonly IModel3DRepository _model3DRepository;
+        private readonly IModelCategoryRepository _modelCategoryRepository;
 
-
-        public HomeController(ModelShopContext context, ILogger<HomeController> logger)
+        public HomeController(IModel3DRepository model3DRepository,
+            IModelCategoryRepository modelCategoryRepository,
+            ILogger<HomeController> logger)
         {
-            _context = context;
+            _model3DRepository = model3DRepository;
+            _modelCategoryRepository = modelCategoryRepository;
             _logger = logger;
         }
 
@@ -24,14 +28,14 @@ namespace ModelShop.Controllers
 
         public IActionResult ModelList()
         {
-            var models = _context.Models3D.ToList();
+            var models = _model3DRepository.GetAll();
 
             return View(models);
         }
 
         public IActionResult Category()
         {
-            var categories = _context.ModelCategories.ToList();
+            var categories = _modelCategoryRepository.GetAll();
 
             return View(categories);
         }
