@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ModelShop.Models
@@ -12,9 +13,10 @@ namespace ModelShop.Models
         [MaxLength(50)]
         public string? Title { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(100)]
         public string? ImageSource { get; set; }
 
+        [Precision(18, 2)]
         public decimal Price { get; set; }
 
         [MaxLength(200)]
@@ -22,11 +24,11 @@ namespace ModelShop.Models
         
         public DateTime? CreatedDate { get; set; }
 
-        [ForeignKey("ModelCategoryID")]
+        [ForeignKey("ModelCategory")]
         public int? ModelCategoryID { get; set; }
 
-        [ForeignKey("OwnerID")]
-        public int? OwnerID { get; set; }
+        [ForeignKey("Owner")]
+        public string? OwnerID { get; set; }
 
         // reference navigation
         public ModelCategory? ModelCategory { get; set; }

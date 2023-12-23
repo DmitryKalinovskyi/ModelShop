@@ -1,7 +1,12 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ModelShop.Data;
 using ModelShop.Data.Contracts;
 using ModelShop.Data.Implementation;
+using ModelShop.Helpers;
+using ModelShop.Models;
+using ModelShop.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +22,18 @@ builder.Services.AddScoped<IModel3DRepository, Model3DRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IModelCategoryRepository, ModelCategoryRepository>();
 
+// Add PhotoService
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.AddScoped<IPhotoService, PhotoService>();
+
+// Identity
+builder.Services.AddIdentity<Client,  IdentityRole>().
+    AddEntityFrameworkStores<ModelShopContext>();
+
+builder.Services.AddMemoryCache();
+builder.Services.AddSession();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie();
 
 var app = builder.Build();
 
@@ -39,6 +56,8 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<ModelShopContext>();
     context.Database.EnsureCreated();
     DbInitializer.Initialize(context);
+
+    await DbInitializer.SeedClientsAndRolesAsync(app);
 }
 
 
@@ -46,7 +65,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

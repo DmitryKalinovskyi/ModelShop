@@ -23,11 +23,6 @@ namespace ModelShop.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult ModelList()
-        {
             var models = _model3DRepository.GetAll();
 
             return View(models);

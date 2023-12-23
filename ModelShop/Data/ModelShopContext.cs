@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ModelShop.Models;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 
 namespace ModelShop.Data
 {
-    public class ModelShopContext : DbContext
+    public class ModelShopContext : IdentityDbContext<Client>
     {
         public ModelShopContext(DbContextOptions<ModelShopContext> options)
             : base(options)

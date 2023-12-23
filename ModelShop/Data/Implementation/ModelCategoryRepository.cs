@@ -15,12 +15,7 @@ namespace ModelShop.Data.Implementation
 
         public void Delete(ModelCategory entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteAsync(ModelCategory entity)
-        {
-            throw new NotImplementedException();
+            _context.ModelCategories.Remove(entity);
         }
 
         public ModelCategory Get(int id)

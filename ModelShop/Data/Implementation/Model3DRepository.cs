@@ -15,12 +15,7 @@ namespace ModelShop.Data.Implementation
 
         public void Delete(Model3D entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteAsync(Model3D entity)
-        {
-            throw new NotImplementedException();
+            _context.Models3D.Remove(entity);
         }
 
         public Model3D Get(int id)

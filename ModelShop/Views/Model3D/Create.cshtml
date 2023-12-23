@@ -1,8 +1,8 @@
-﻿@model Model3D
+﻿@using ModelShop.ViewModels;
+@model Model3DCreateViewModel
 
 <div class="container">
-    <form asp-action="Create" method="post">
-    
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label asp-for="Title" class="form-label">Title</label>
             <input asp-for="Title" class="form-control"
@@ -17,11 +17,18 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="Price" class="form-label">Price</label>
+            <label asp-for="Description" class="form-label">Description</label>
             <textarea asp-for="Description" class="form-contorl"
             placeholder="Enter description..."></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
+
+        <div class="mb-3">
+            <label asp-for="Image" class="form-label">Image</label>
+            <input asp-for="Image" type="file" class="form-control" />
+            <span asp-validation-for="Image" class="text-danger"></span>
+        </div>
+
 
        @* <div class="mb-3">
             <label asp-for="Description" class="form-label">Title</label>

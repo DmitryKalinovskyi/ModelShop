@@ -13,9 +13,9 @@ namespace ModelShop.Controllers
         }
 
 
-        public IActionResult Details(int id)
+        public IActionResult Details(string id)
         {
-            return View(_clientRepository.Get(id));
+            return View(_clientRepository.GetById(id));
         }
     }
 }
