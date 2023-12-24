@@ -21,10 +21,14 @@ builder.Services.AddDbContext<ModelShopContext>((options) =>
 builder.Services.AddScoped<IModel3DRepository, Model3DRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IModelCategoryRepository, ModelCategoryRepository>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
 
 // Add PhotoService
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddScoped<IPhotoService, PhotoService>();
+
+// Add FileService
+builder.Services.AddScoped<IFileService, FileService>();
 
 // Identity
 builder.Services.AddIdentity<Client,  IdentityRole>().

@@ -1,4 +1,5 @@
-﻿@model Client
+﻿@using ModelShop.ViewModels;
+@model ProfileViewModel
 
 <link href="~/css/profile-view.css"/>
 
@@ -8,19 +9,31 @@
         <img src="~/img/avatar/a1.avif" alt="">
         <div class="ps-3">
             <div class="fs-4 text-light">
-                @Model.Firstname
-                @Model.Lastname
+                @Model.Client.Firstname
+                @Model.Client.Lastname
             </div>
             <div class="d-flex align-items-center">
                 <!-- if not your account -->
-                <!-- not followed -->
-                <button class="btn btn-primary">Follow</button>
+                @if(Model.IsOwner == false)
+                {
+                    <!-- not followed -->
+                    <button class="btn btn-primary">Follow</button>
 
-                <!-- followed -->
-                <button class="btn btn-primary">Unfollow</button>
+                    <!-- followed -->
+                    <button class="btn btn-primary">Unfollow</button>
+                }
+                else
+                { 
+                    @*<form asp-action="Edit" asp-controller="Profile">
+                        <button class="btn btn-primary">Edit profile</button>
+                    </form>
+*@
+                    <!-- your account -->
+                    <a asp-action="Edit" asp-controller="Profile" class="btn btn-primary" role="button">
+                        Edit profile 
+                    </a>
 
-                <!-- your account -->
-                <button class="btn btn-primary">Edit profile</button>
+                }
 
                 <div class="ps-3 text-light d-flex align-items-center">
                     Followers 23
@@ -40,7 +53,7 @@
                     Popular 3d models
                 </div>
                 <div class="row row-gap-4">
-                    @foreach(var ownedModel in Model.OwnedModels3D)
+                    @foreach (var ownedModel in Model.Client.OwnedModels3D)
                     {
                         <div class="col-12 col-md-6 col-xl-4">
                             <div class="card model">
@@ -48,13 +61,16 @@
                                 class="text-decoration-none">
                                     <img src="@ownedModel.ImageSource" class="card-img-top" alt="...">
                                 </a>
-                                <div class="card-footer">
+                                <div class="card-footer d-flex">
                                     <div class="card-footer-left">
+                                        <h5>
+                                            @ownedModel.Title
+                                        </h5>
                                         @*<a class="card-profile" href="profile-view.html">@@Deeperxd</a>*@
                                     </div>
                                     <div class="card-footer-right">
-                                        <div><i class="bi bi-eye"> </i>count</div>
-                                        <div><i class="bi bi-chat"> </i>count</div>
+                                        <div><i class="bi bi-eye"> </i>@ownedModel.Views</div>
+                                        @*<div><i class="bi bi-chat"> </i>count</div>*@
                                     </div>
                                 </div>
                             </div>
@@ -71,9 +87,14 @@
                                 About
                             </div>
                             <div class="card-body">
-
-                                @Model.Description
-                                
+                                @if (Model.Client.Description == null)
+                                {
+                                    <div>Description is empty ...</div>
+                                }
+                                else
+                                {
+                                    @Model.Client.Description
+                                }
                             </div>
                         </div>
                     </div>
@@ -86,11 +107,11 @@
                             </div>
                             <div class="card-body">
                                 <div>
-                                    <div><i class="bi bi-eye"> </i>Views</div>
+                                    <div><i class="bi bi-eye"> </i>@Model.Views</div>
                                 </div>
-                                <div>
+                                @*<div>
                                     <div><i class="bi bi-chat"> </i>Comments</div>
-                                </div>
+                                </div>*@
                             </div>
                         </div>
                     </div>

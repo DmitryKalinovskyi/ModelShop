@@ -19,9 +19,13 @@ namespace ModelShop.Models
         [MaxLength(200)]
         public string? AvatarImageSource { get; set; }
 
+
         // reference navigation
 
         public IEnumerable<Model3D> OwnedModels3D { get; set; }
+        
+        public Cart? Cart { get; set; }
+
 
         //public IEnumerable<ClientFollower> Followers { get; set; }  
 

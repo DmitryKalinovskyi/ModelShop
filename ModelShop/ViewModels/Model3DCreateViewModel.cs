@@ -16,6 +16,8 @@ namespace ModelShop.ViewModels
         [MaxLength(200)]
         public string? Description { get; set; }
 
+        public IFormFile? Model3DFile { get; set; }
+
         public int? ModelCategoryID { get; set; }
     }
 }

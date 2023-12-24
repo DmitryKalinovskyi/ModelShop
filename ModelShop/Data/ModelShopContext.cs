@@ -15,8 +15,16 @@ namespace ModelShop.Data
         }
 
         public DbSet<Model3D> Models3D { get; set; }
+        
         public DbSet<ModelCategory> ModelCategories { get; set; }
+        
         public DbSet<Client> Clients{ get; set; }
+        
+        public DbSet<Cart> Carts{ get; set; }
+
+        public DbSet<Cart_Model3D> Cart_Models3D{ get; set; }
+
+
         //public DbSet<ModelFile> ModelFiles{ get; set; }
 
 

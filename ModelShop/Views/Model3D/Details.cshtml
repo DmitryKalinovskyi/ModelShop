@@ -1,4 +1,5 @@
-﻿@model Model3D
+﻿@using ModelShop.ViewModels;
+@model Model3DDetailViewModel
 
 <script src="~/js/model3d-view.js" defer></script>
 @*
@@ -47,37 +48,51 @@
     <div class="row">
         <div class="col-9">
             <div>
-                <img class="w-50" src="@Model.ImageSource">
+                <img class="w-50" src="@Model.Model3D.ImageSource">
             </div>
             <div>
                 <h4>
-                    @Model.Title
+                    @Model.Model3D.Title
                 </h4>
             </div>
             <div>
-                <span>@Model.Price$</span>
-                <!-- if not owned -->
-                <button class="btn btn-primary">Add to cart</button>
+                <span>@Model.Model3D.Price$</span>
+                @if(Model.IsOwner == false){
 
-                <!-- if owned -->
-                <button class="toggle-download btn btn-primary ">Download model</button>
+                    <!-- if not owned -->
+                    <button class="btn btn-primary">Add to cart</button>
+                }
+                else
+                {
+                    <!-- if owned -->
+                    <a href="@Model.Model3D.FileSource" target="_blank" class="btn btn-primary" role="button">
+                        @*<button type="button" class="toggle-download btn btn-primary ">*@
+                        Download model
+                        @*</button>*@
+                    </a>
 
-                @*if author or have deletion rules*@
-                <form asp-controller="Model3D" asp-action="Delete" asp-route-id="@Model.Model3DID" method="post">
-                    <button class="toggle-download btn btn-primary ">Delete</button>
-                </form>
+                   
+                }
+
+                @if(Model.IsOwner){
+                    @*if author or have deletion rules*@
+                    <form asp-controller="Model3D" asp-action="Delete" asp-route-id="@Model.Model3D.Model3DID" method="post">
+                        <button class="btn btn-primary ">Delete</button>
+                    </form>
+                }
+                
             </div>
             <hr>
             <div>
-                @Model.Description
+                @Model.Model3D.Description
             </div>
             <div class="flex">
                 <i class="bi bi-clock"></i>
-                @Model.CreatedDate
+                @Model.Model3D.CreatedDate
             </div>
             <div class="flex">
                 <i class="bi bi-tag"></i>
-                @Model.ModelCategory.Name
+                @Model.Model3D.ModelCategory.Name
             </div>
             <hr>
 

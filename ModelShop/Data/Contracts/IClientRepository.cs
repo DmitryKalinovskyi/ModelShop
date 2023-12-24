@@ -7,5 +7,11 @@ namespace ModelShop.Data.Contracts
         Client GetById(string id);
 
         Task<Client> GetByIdAsync(string id);
+
+        int GetViewsById(string userId);
+
+        Client GetByIdWithCart(string id);
+
+        Task<Client> GetByIdWithCartAsync(string id);
     }
 }

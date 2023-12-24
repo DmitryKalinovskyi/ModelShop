@@ -26,7 +26,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        
+                    </ul>
+
+                    <ul class="navbar-nav">
                         @if (User.Identity.IsAuthenticated == false)
                         {
                             <li class="nav-item">
@@ -39,13 +41,26 @@
                         else
                         {
                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">
+                                    <i class="bi bi-cart"></i>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Model3D" asp-action="Create">Create Model</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <form asp-controller="Profile" asp-action="Current">
+                                    <button class="btn btn-outline-primary">My Profile</button>
+                                    @*<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>*@
+                                </form>
                             </li>
 
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout">
                                     <button class="btn btn-outline-danger">Logout</button>
-                                @*<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>*@
+                                    @*<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>*@
                                 </form>
                             </li>
                         }

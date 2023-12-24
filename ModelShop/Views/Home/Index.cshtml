@@ -1,15 +1,37 @@
-﻿@{
+﻿@using ModelShop.ViewModels;
+@model IndexViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
-
-@model IEnumerable<Model3D>
-
 <div class="container">
+    <form asp-controller="Home" asp-action="Index">
+        <div class="input-group rounded">
+            <input type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon"
+            asp-for="Search"/>
+            <span class="input-group-text border-0" id="search-addon">
+                    <button class="btn btn-dark">
+                        <i class="bi bi-search"></i>
+                    </button>
+            </span>
+        </div>
+    </form>
 
-    <div class="row row-gap-4">
+    <div class="row g-3 mt-2">
+        <div class="col-auto">
+            <select class="form-control">
+                <option selected>All categories</option>
+                @foreach (var category in Model.ModelCategories)
+                {
+                    <option value="@category.Name">@category.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="row row-gap-4 mt-4">
         <!-- allow only 16/9 images -->
-        @foreach (var model3d in Model)
+        @foreach (var model3d in Model.Models3D)
         {
             <div class="col-12 col-md-6 col-xl-3">
                 <div class="card">
@@ -28,7 +50,7 @@
                                 <a class="card-profile" asp-controller="Profile" asp-action="Details" asp-route-id="@model3d.OwnerID">@@@model3d.Owner.UserName</a>
                             </div>
                             <div class="card-footer-right">
-                                <div><i class="bi bi-eye"> </i>count</div>
+                                <div><i class="bi bi-eye"> </i>@model3d.Views</div>
                                 @*<div><i class="bi bi-chat"> </i>count</div>*@
                             </div>
                         </div>

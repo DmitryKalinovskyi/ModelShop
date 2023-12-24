@@ -1,0 +1,36 @@
+﻿@using ModelShop.ViewModels;
+@model ProfileEditViewModel
+
+<div class="container">
+    <form asp-contoller="Profile" asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label asp-for="Firstname" class="form-label">Firstname</label>
+            <input asp-for="Firstname" class="form-control"
+                   placeholder="Enter аirstname...">
+            <span asp-validation-for="Firstname" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Lastname" class="form-label">Lastname</label>
+            <input asp-for="Lastname" class="form-control"
+                   placeholder="Enter lastname...">
+            <span asp-validation-for="Lastname" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-contorl"
+                      placeholder="Enter description..."></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        @* <div class="mb-3">
+        <label asp-for="Description" class="form-label">Title</label>
+        <textarea asp-for="Price" class="form-control"
+        placeholder="Enter price...">
+        <span asp-validation-for="Price" class="text-danger"></span>
+        </div>*@
+
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

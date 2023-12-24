@@ -65,6 +65,16 @@ namespace ModelShop.Data.Implementation
             _context.SaveChanges();
         }
 
+        public async Task<IEnumerable<Model3D>> SearchAsync(string? search)
+        {
+            if(search == null) return await GetAllAsync();
+            search = search.ToLower();
+            return await _context.Models3D
+                .Where(m => m.Title.ToLower().Contains(search))
+                .Include(m => m.Owner)
+                .ToListAsync();
+        }
+
         public void Update(Model3D entity)
         {
             throw new NotImplementedException();

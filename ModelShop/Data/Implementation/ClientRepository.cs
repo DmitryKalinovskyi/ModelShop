@@ -81,5 +81,30 @@ namespace ModelShop.Data.Implementation
         {
             throw new NotImplementedException();
         }
+
+        public int GetViewsById(string userId)
+        {
+            return _context.Models3D
+                .Where(m => m.OwnerID == userId)
+                .Sum(m => m.Views);
+        }
+
+        public Client GetByIdWithCart(string id)
+        {
+            return _context.Clients
+                .Include(c => c.Cart)
+                .ThenInclude(cart => cart.Cart_Models3D)
+                .ThenInclude(cart_model3d => cart_model3d.Model3D)
+                .FirstOrDefault(c => c.Id == id);
+        }
+
+        public async Task<Client> GetByIdWithCartAsync(string id)
+        {
+            return await _context.Clients
+                .Include(c => c.Cart)
+                .ThenInclude(cart => cart.Cart_Models3D)
+                .ThenInclude(cart_model3d => cart_model3d.Model3D)
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
     }
 }

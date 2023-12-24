@@ -7,5 +7,7 @@ namespace ModelShop.Data.Contracts
         Model3D Get(int id);
 
         Task<Model3D> GetAsync(int id);
+
+        Task<IEnumerable<Model3D>> SearchAsync(string search);
     }
 }

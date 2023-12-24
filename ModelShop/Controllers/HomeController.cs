@@ -2,6 +2,7 @@
 using ModelShop.Data;
 using ModelShop.Data.Contracts;
 using ModelShop.Models;
+using ModelShop.ViewModels;
 using System.Diagnostics;
 
 namespace ModelShop.Controllers
@@ -21,18 +22,24 @@ namespace ModelShop.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var models = _model3DRepository.GetAll();
+            var viewModel = new IndexViewModel
+            { 
+                Models3D = await _model3DRepository.GetAllAsync(),
+                ModelCategories = await _modelCategoryRepository.GetAllAsync()
+            };
 
-            return View(models);
+            return View(viewModel);
         }
 
-        public IActionResult Category()
+        [HttpPost]
+        public async Task<IActionResult> IndexAsync(IndexViewModel indexViewModel)
         {
-            var categories = _modelCategoryRepository.GetAll();
+            indexViewModel.Models3D = await _model3DRepository.SearchAsync(indexViewModel.Search);
+            indexViewModel.ModelCategories = await _modelCategoryRepository.GetAllAsync();
 
-            return View(categories);
+            return View(indexViewModel);
         }
 
 

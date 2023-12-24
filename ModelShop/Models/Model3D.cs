@@ -24,11 +24,15 @@ namespace ModelShop.Models
         
         public DateTime? CreatedDate { get; set; }
 
+        public int Views { get; set; } = 0;
+
         [ForeignKey("ModelCategory")]
         public int? ModelCategoryID { get; set; }
 
         [ForeignKey("Owner")]
         public string? OwnerID { get; set; }
+
+        public string? FileSource { get; set; }
 
         // reference navigation
         public ModelCategory? ModelCategory { get; set; }

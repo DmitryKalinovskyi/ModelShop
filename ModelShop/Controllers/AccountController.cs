@@ -110,6 +110,8 @@ namespace ModelShop.Controllers
             // create new client
             client = new Client
             {
+                Firstname = registerViewModel.Firstname,
+                Lastname = registerViewModel.Lastname,
                 UserName = registerViewModel.Username,
                 Email = registerViewModel.Email,
                 RegisterDate = DateTime.Now,
@@ -120,10 +122,16 @@ namespace ModelShop.Controllers
             if (newUserResponse.Succeeded)
             {
                 await _userManager.AddToRoleAsync(client, UserRoles.User);
-                return RedirectToAction("Login", "Account", new LoginViewModel
-                {
 
-                });
+                var result = await _signInManager.PasswordSignInAsync(client, registerViewModel.Password, false, false);
+
+                if (result.Succeeded == false)
+                {
+                    ModelState.AddModelError("Password", "Internal server error");
+                    return View(registerViewModel);
+                }
+
+                return RedirectToAction("Index", "Home");
             }
             else
             {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ModelShop.Data;
 
@@ -11,9 +12,11 @@ using ModelShop.Data;
 namespace ModelShop.Migrations
 {
     [DbContext(typeof(ModelShopContext))]
-    partial class ModelShopContextModelSnapshot : ModelSnapshot
+    [Migration("20231224004646_Models3DModelAttachment")]
+    partial class Models3DModelAttachment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,41 +156,6 @@ namespace ModelShop.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("ModelShop.Models.Cart", b =>
-                {
-                    b.Property<int>("CartID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartID"));
-
-                    b.Property<string>("ClientID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("CartID");
-
-                    b.HasIndex("ClientID")
-                        .IsUnique();
-
-                    b.ToTable("Carts");
-                });
-
-            modelBuilder.Entity("ModelShop.Models.Cart_Model3D", b =>
-                {
-                    b.Property<int>("CartID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Model3DID")
-                        .HasColumnType("int");
-
-                    b.HasKey("CartID", "Model3DID");
-
-                    b.HasIndex("Model3DID");
-
-                    b.ToTable("Cart_Models3D");
                 });
 
             modelBuilder.Entity("ModelShop.Models.Client", b =>
@@ -390,36 +358,6 @@ namespace ModelShop.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ModelShop.Models.Cart", b =>
-                {
-                    b.HasOne("ModelShop.Models.Client", "Client")
-                        .WithOne("Cart")
-                        .HasForeignKey("ModelShop.Models.Cart", "ClientID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Client");
-                });
-
-            modelBuilder.Entity("ModelShop.Models.Cart_Model3D", b =>
-                {
-                    b.HasOne("ModelShop.Models.Cart", "Cart")
-                        .WithMany("Cart_Models3D")
-                        .HasForeignKey("CartID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ModelShop.Models.Model3D", "Model3D")
-                        .WithMany()
-                        .HasForeignKey("Model3DID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cart");
-
-                    b.Navigation("Model3D");
-                });
-
             modelBuilder.Entity("ModelShop.Models.Model3D", b =>
                 {
                     b.HasOne("ModelShop.Models.ModelCategory", "ModelCategory")
@@ -435,15 +373,8 @@ namespace ModelShop.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("ModelShop.Models.Cart", b =>
-                {
-                    b.Navigation("Cart_Models3D");
-                });
-
             modelBuilder.Entity("ModelShop.Models.Client", b =>
                 {
-                    b.Navigation("Cart");
-
                     b.Navigation("OwnedModels3D");
                 });
 
