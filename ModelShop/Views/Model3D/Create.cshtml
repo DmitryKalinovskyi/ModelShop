@@ -35,6 +35,18 @@
             <span asp-validation-for="Model3DFile" class="text-danger"></span>
         </div>
 
+        <div class="mb-3">
+            <label asp-for="ModelCategoryID" class="form-label">Select category</label>
+
+            <select asp-for="ModelCategoryID" class="form-control">
+                @foreach(var category in Model.ModelCategories)
+                {
+                    <option value="@category.ModelCategoryID">@category.Name</option>
+                }
+            </select>
+            <span asp-validation-for="ModelCategoryID" class="text-danger"></span>
+        </div>
+
        @* <div class="mb-3">
             <label asp-for="Description" class="form-label">Title</label>
             <textarea asp-for="Price" class="form-control"

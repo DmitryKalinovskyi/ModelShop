@@ -2,6 +2,7 @@
 using Microsoft.Identity.Client;
 using ModelShop.Data.Contracts;
 using ModelShop.Models;
+using System.Security.Permissions;
 
 namespace ModelShop.Data.Implementation
 {
@@ -26,7 +27,7 @@ namespace ModelShop.Data.Implementation
                 .FirstOrDefault(model => model.Model3DID == id);
         }
 
-        public IEnumerable<Model3D> GetAll()
+        public ICollection<Model3D> GetAll()
         {
             return _context.Models3D
                 .Include(m => m.Owner)
@@ -34,7 +35,7 @@ namespace ModelShop.Data.Implementation
                 .ToList();
         }
 
-        public async Task<IEnumerable<Model3D>> GetAllAsync()
+        public async Task<ICollection<Model3D>> GetAllAsync()
         {
             return await _context.Models3D
                 .Include(m => m.Owner)
@@ -65,12 +66,12 @@ namespace ModelShop.Data.Implementation
             _context.SaveChanges();
         }
 
-        public async Task<IEnumerable<Model3D>> SearchAsync(string? search)
+        public async Task<IEnumerable<Model3D>> SearchAsync(string? search, decimal minPrice, decimal maxPrice)
         {
-            if(search == null) return await GetAllAsync();
+            search = search == null ? "" : search;
             search = search.ToLower();
             return await _context.Models3D
-                .Where(m => m.Title.ToLower().Contains(search))
+                .Where(m => m.Title.ToLower().Contains(search) && m.Price >= minPrice && m.Price <= maxPrice)
                 .Include(m => m.Owner)
                 .ToListAsync();
         }

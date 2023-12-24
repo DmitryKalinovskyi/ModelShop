@@ -115,6 +115,7 @@ namespace ModelShop.Controllers
                 UserName = registerViewModel.Username,
                 Email = registerViewModel.Email,
                 RegisterDate = DateTime.Now,
+                Cart = new Cart()
             };
 
             var newUserResponse = await _userManager.CreateAsync(client, registerViewModel.Password);

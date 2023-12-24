@@ -1,0 +1,18 @@
+﻿@using ModelShop.ViewModels;
+
+@model DashboardViewModel
+
+
+<div class="container">
+	<h4>
+		My models
+	</h4>
+
+	<div class="row">
+		@foreach(var owned in Model.OwnedModels){
+			<div>
+				@owned.Title
+			</div>
+		}
+	</div>
+</div>

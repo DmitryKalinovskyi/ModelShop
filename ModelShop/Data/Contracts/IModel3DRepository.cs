@@ -8,6 +8,6 @@ namespace ModelShop.Data.Contracts
 
         Task<Model3D> GetAsync(int id);
 
-        Task<IEnumerable<Model3D>> SearchAsync(string search);
+        Task<IEnumerable<Model3D>> SearchAsync(string search, decimal minPrice, decimal maxPrice);
     }
 }

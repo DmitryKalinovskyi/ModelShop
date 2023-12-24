@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using ModelShop.Data.Contracts;
 using ModelShop.Models;
 
@@ -32,12 +33,12 @@ namespace ModelShop.Data.Implementation
             return _context.Clients.Include(c => c.OwnedModels3D).FirstOrDefault(client => client.Id == id);
         }
 
-        public IEnumerable<Client> GetAll()
+        public ICollection<Client> GetAll()
         {
             return _context.Clients.ToList();
         }
 
-        public async Task<IEnumerable<Client>> GetAllAsync()
+        public async Task<ICollection<Client>> GetAllAsync()
         {
             return await _context.Clients.ToListAsync();
         }
@@ -105,6 +106,39 @@ namespace ModelShop.Data.Implementation
                 .ThenInclude(cart => cart.Cart_Models3D)
                 .ThenInclude(cart_model3d => cart_model3d.Model3D)
                 .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public bool IsModel3DOrdered(string id, int modelId)
+        {
+            return _context.Clients
+                .Include(c => c.Orders)
+                .ThenInclude(o => o.OrderItems)
+                .FirstOrDefault(c => c.Id == id)
+                .Orders.Any(order =>
+                    order.OrderItems.Any(o_m => o_m.Model3DID == modelId)
+                );
+        }
+
+        public ICollection<Model3D> GetOrderedModels(string clientId)
+        {
+            var client = _context.Clients
+            .Include(c => c.Orders)
+                .ThenInclude(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Model3D)
+            .FirstOrDefault(c => c.Id == clientId);
+
+            if (client != null)
+            {
+                var orderedModels = client.Orders
+                    .SelectMany(o => o.OrderItems)
+                    .Select(oi => oi.Model3D)
+                    .Distinct()
+                    .ToList();
+
+                return orderedModels;
+            }
+
+            return new List<Model3D>();
         }
     }
 }

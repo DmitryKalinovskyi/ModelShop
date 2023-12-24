@@ -7,5 +7,9 @@ namespace ModelShop.ViewModels
         public Model3D Model3D { get; set; }
 
         public bool IsOwner { get; set; }
+
+        public bool IsInCart { get; set; }
+
+        public bool IsOwned { get; set; }
     }
 }

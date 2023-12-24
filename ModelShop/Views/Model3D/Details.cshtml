@@ -1,7 +1,7 @@
 ﻿@using ModelShop.ViewModels;
 @model Model3DDetailViewModel
 
-<script src="~/js/model3d-view.js" defer></script>
+@*<script src="~/js/model3d-view.js" defer></script>*@
 @*
 <div class="download-context-menu" style="visibility: hidden">
     <div class="card">
@@ -55,28 +55,36 @@
                     @Model.Model3D.Title
                 </h4>
             </div>
-            <div>
-                <span>@Model.Model3D.Price$</span>
-                @if(Model.IsOwner == false){
+            <div class="d-flex align-items-center">
+                <div>@Model.Model3D.Price$</div>
+                @if(Model.IsOwner == false && Model.IsOwned == false){
 
-                    <!-- if not owned -->
-                    <button class="btn btn-primary">Add to cart</button>
+                    @if (Model.IsInCart)
+                    {
+                        <form class="ms-2" asp-controller="Model3D" asp-action="RemoveFromCart" asp-route-id="@Model.Model3D.Model3DID">
+                            <button class="btn btn-primary">Remove from cart</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form class="ms-2" asp-controller="Model3D" asp-action="AddToCart" asp-route-id="@Model.Model3D.Model3DID">
+                            <button class="btn btn-primary">Add to cart</button>
+                        </form>
+                    }
                 }
                 else
                 {
                     <!-- if owned -->
-                    <a href="@Model.Model3D.FileSource" target="_blank" class="btn btn-primary" role="button">
+                    <a href="@Model.Model3D.FileSource" target="_blank" class="btn btn-primary ms-2" role="button">
                         @*<button type="button" class="toggle-download btn btn-primary ">*@
                         Download model
                         @*</button>*@
                     </a>
-
-                   
                 }
 
                 @if(Model.IsOwner){
                     @*if author or have deletion rules*@
-                    <form asp-controller="Model3D" asp-action="Delete" asp-route-id="@Model.Model3D.Model3DID" method="post">
+                    <form class="ms-2" asp-controller="Model3D" asp-action="Delete" asp-route-id="@Model.Model3D.Model3DID" method="post">
                         <button class="btn btn-primary ">Delete</button>
                     </form>
                 }

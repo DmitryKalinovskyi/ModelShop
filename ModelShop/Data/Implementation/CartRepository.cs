@@ -23,12 +23,12 @@ namespace ModelShop.Data.Implementation
             _context.Carts.Remove(entity);
         }
 
-        public IEnumerable<Cart> GetAll()
+        public ICollection<Cart> GetAll()
         {
             return _context.Carts.ToList();
         }
 
-        public async Task<IEnumerable<Cart>> GetAllAsync()
+        public async Task<ICollection<Cart>> GetAllAsync()
         {
             return await _context.Carts.ToListAsync();
         }
@@ -38,6 +38,7 @@ namespace ModelShop.Data.Implementation
             return _context.Carts
                 .Include(c => c.Cart_Models3D)
                 .ThenInclude(cart_model3d => cart_model3d.Model3D)
+                .ThenInclude(model3D => model3D.Owner)
                 .FirstOrDefault(cart => cart.ClientID == clientId);
         }
 
@@ -46,6 +47,7 @@ namespace ModelShop.Data.Implementation
             return await _context.Carts
                 .Include(c => c.Cart_Models3D)
                 .ThenInclude(cart_model3d => cart_model3d.Model3D)
+                .ThenInclude(model3D => model3D.Owner)
                 .FirstOrDefaultAsync(cart => cart.ClientID == clientId);
         }
 

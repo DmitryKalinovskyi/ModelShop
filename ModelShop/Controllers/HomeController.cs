@@ -27,7 +27,8 @@ namespace ModelShop.Controllers
             var viewModel = new IndexViewModel
             { 
                 Models3D = await _model3DRepository.GetAllAsync(),
-                ModelCategories = await _modelCategoryRepository.GetAllAsync()
+                ModelCategories = await _modelCategoryRepository.GetAllAsync(),
+                IsFindResult = false
             };
 
             return View(viewModel);
@@ -36,9 +37,23 @@ namespace ModelShop.Controllers
         [HttpPost]
         public async Task<IActionResult> IndexAsync(IndexViewModel indexViewModel)
         {
-            indexViewModel.Models3D = await _model3DRepository.SearchAsync(indexViewModel.Search);
-            indexViewModel.ModelCategories = await _modelCategoryRepository.GetAllAsync();
+            indexViewModel.Models3D = await _model3DRepository
+                .SearchAsync(indexViewModel.Search, indexViewModel.MinPrice, indexViewModel.MaxPrice);
 
+            indexViewModel.Models3D = indexViewModel.OrderBy switch
+            {
+                OrderBy.Date => indexViewModel.Models3D.OrderBy(m => m.CreatedDate),
+                OrderBy.DateDescending => indexViewModel.Models3D.OrderByDescending(m => m.CreatedDate),
+                OrderBy.Views => indexViewModel.Models3D.OrderBy(m => m.Views),
+                OrderBy.ViewsDescending => indexViewModel.Models3D.OrderByDescending(m => m.Views),
+                OrderBy.Price => indexViewModel.Models3D.OrderBy(m => m.Price),
+                OrderBy.PriceDescending => indexViewModel.Models3D.OrderByDescending(m => m.Price)
+            };
+
+
+            indexViewModel.ModelCategories = await _modelCategoryRepository.GetAllAsync();
+            indexViewModel.IsFindResult = true;
+            //indexViewModel.MinPrice = 
             return View(indexViewModel);
         }
 

@@ -15,34 +15,62 @@
                     </button>
             </span>
         </div>
+
+        <div class="row g-3 mt-2">
+            <div class="col-auto">
+                <select class="form-control">
+                    <option selected>All categories</option>
+                    @foreach (var category in Model.ModelCategories)
+                    {
+                        <option value="@category.Name">@category.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-auto">
+                <select asp-for="OrderBy" class="form-control" onchange="submit()" >
+                    @foreach (var order in Enum.GetValues(typeof(OrderBy)))
+                    {
+                        <option value="@order">@order</option>
+                    }
+                </select>
+            </div>
+            <div class="col-auto">
+                <div class="d-flex align-items-center">
+                <input type="text" class="form-control" placeholder="0" asp-for="MinPrice"/>
+                <div class="ms-2">
+                    to
+                </div>
+                <input type="text" class="form-control ms-2" placeholder="30000" asp-for="MaxPrice"/>
+                </div>
+            </div>
+        </div>
     </form>
 
-    <div class="row g-3 mt-2">
-        <div class="col-auto">
-            <select class="form-control">
-                <option selected>All categories</option>
-                @foreach (var category in Model.ModelCategories)
-                {
-                    <option value="@category.Name">@category.Name</option>
-                }
-            </select>
-        </div>
-    </div>
+    @if(Model.IsFindResult){
+        <h4 class="mt-4">
+            Finded total @Model.Models3D.Count() results
+        </h4>
+    }
 
-    <div class="row row-gap-4 mt-4">
+
+    <div class="row row-gap-4">
         <!-- allow only 16/9 images -->
         @foreach (var model3d in Model.Models3D)
         {
-            <div class="col-12 col-md-6 col-xl-3">
+            <div class="col-12 col-md-6 col-xl-3 mt-4">
                 <div class="card">
                     <a asp-controller="Model3D" asp-action="Details" asp-route-id="@model3d.Model3DID" class="text-decoration-none">
                         <img src="@model3d.ImageSource" class="card-img-top" alt="...">
                     </a>
                     <div class="card-footer">
-                        <div>
+                        <div class="d-flex justify-content-between">
                             <h5>
                                 @model3d.Title
                             </h5>
+                            <h6 style="color: #F65A5A">
+                                @(model3d.Price==0?"Free":$"{model3d.Price}$")
+                            </h6>
                         </div>
 
                         <div class="d-flex">

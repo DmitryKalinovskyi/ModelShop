@@ -22,7 +22,9 @@ namespace ModelShop.Models
 
         // reference navigation
 
-        public IEnumerable<Model3D> OwnedModels3D { get; set; }
+        public ICollection<Model3D> OwnedModels3D { get; set; }
+
+        public ICollection<Order> Orders { get; set; }
         
         public Cart? Cart { get; set; }
 

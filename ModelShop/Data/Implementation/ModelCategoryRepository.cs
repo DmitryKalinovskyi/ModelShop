@@ -23,12 +23,12 @@ namespace ModelShop.Data.Implementation
             return _context.ModelCategories.FirstOrDefault(modelCategory => modelCategory.ModelCategoryID == id);
         }
 
-        public IEnumerable<ModelCategory> GetAll()
+        public ICollection<ModelCategory> GetAll()
         {
             return _context.ModelCategories.ToList();
         }
 
-        public async Task<IEnumerable<ModelCategory>> GetAllAsync()
+        public async Task<ICollection<ModelCategory>> GetAllAsync()
         {
             return await _context.ModelCategories.ToListAsync();
         }

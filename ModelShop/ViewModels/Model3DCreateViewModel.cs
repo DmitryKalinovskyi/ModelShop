@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using ModelShop.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ModelShop.ViewModels
 {
@@ -16,8 +18,11 @@ namespace ModelShop.ViewModels
         [MaxLength(200)]
         public string? Description { get; set; }
 
-        public IFormFile? Model3DFile { get; set; }
+        [Required]
+        public IFormFile Model3DFile { get; set; }
 
         public int? ModelCategoryID { get; set; }
+
+        public ICollection<ModelCategory>? ModelCategories { get; set; }
     }
 }

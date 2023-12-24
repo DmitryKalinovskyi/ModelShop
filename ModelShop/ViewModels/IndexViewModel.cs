@@ -2,6 +2,23 @@
 
 namespace ModelShop.ViewModels
 {
+    public enum OrderBy
+    {
+        Date,
+        DateDescending,
+        Views,
+        ViewsDescending,
+        Price,
+        PriceDescending
+    }
+
+    public enum Criteria 
+    {
+        Default,
+        Owned,
+    }
+
+
     public class IndexViewModel
     {
         public IEnumerable<Model3D> Models3D { get; set; }
@@ -9,6 +26,16 @@ namespace ModelShop.ViewModels
         public IEnumerable<ModelCategory> ModelCategories { get; set; }
 
         public string Search { get; set; }
+
+        public IEnumerable<ModelCategory> ModelCategoriesSearch { get; set; }
+
+        public OrderBy OrderBy { get; set; } = OrderBy.Date;
+
+        public decimal MinPrice { get; set; } = 0;
+
+        public decimal MaxPrice { get; set; } = 100000;
+
+        public bool IsFindResult { get; set; }
         //public int Page { get; set }
     }
 }

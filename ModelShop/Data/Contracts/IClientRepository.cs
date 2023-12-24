@@ -13,5 +13,9 @@ namespace ModelShop.Data.Contracts
         Client GetByIdWithCart(string id);
 
         Task<Client> GetByIdWithCartAsync(string id);
+
+        bool IsModel3DOrdered(string id, int modelId);
+
+        ICollection<Model3D> GetOrderedModels(string clientId);
     }
 }

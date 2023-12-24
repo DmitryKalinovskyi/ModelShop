@@ -10,26 +10,43 @@ namespace ModelShop.Controllers
     public class Model3DController : Controller
     {
         private readonly IModel3DRepository _model3DRepository;
+        private readonly IModelCategoryRepository _modelCategoryRepository;
         private readonly IPhotoService _photoService;
         private readonly IFileService _fileService;
+        private readonly ICartService _orderService;
+
         private readonly UserManager<Client> _userManager;
 
         public Model3DController(IModel3DRepository model3DRepository, IPhotoService photoService,
+            ICartService orderService,
+            IModelCategoryRepository modelCategoryRepository,
             IFileService fileService, UserManager<Client> userManager)
         {
             _model3DRepository = model3DRepository;
             _photoService = photoService;
             _fileService = fileService;
+            _orderService = orderService;
+            _modelCategoryRepository = modelCategoryRepository;
             _userManager = userManager;
         }
 
         public IActionResult Details(int id)
         {
             var model = _model3DRepository.Get(id);
+            if (model == null)
+            {
+                ModelState.AddModelError("Error", "Model not founded!");
+                return BadRequest(ModelState);
+            }
+
+            var userID = _userManager.GetUserId(User);
+
             var viewModel = new Model3DDetailViewModel
             {
                 Model3D = model,
-                IsOwner = model.OwnerID == _userManager.GetUserId(User),
+                IsOwner = model.OwnerID == userID,
+                IsInCart = _orderService.IsInCart(userID, id),
+                IsOwned = _orderService.IsOrdered(userID, id),
             };
 
             model.Views++;
@@ -40,12 +57,50 @@ namespace ModelShop.Controllers
         
         public IActionResult Create()
         {
-            return View();
+            var viewModel = new Model3DCreateViewModel
+            {
+                ModelCategories = _modelCategoryRepository.GetAll()
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Model3DCreateViewModel model3DVM)
+        public async Task<IActionResult> AddToCart(int id)
         {
+            try
+            {
+                _orderService.AddToCart(_userManager.GetUserId(User), id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return RedirectToAction("Details", "Model3D", new { id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromCart(int id)
+        {
+            try
+            {
+                _orderService.RemoveFromCart(_userManager.GetUserId(User), id);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return RedirectToAction("Details", "Model3D", new { id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync(Model3DCreateViewModel model3DVM)
+        {
+            model3DVM.ModelCategories = await _modelCategoryRepository.GetAllAsync();
+
+            //ModelState.Values
             if(ModelState.IsValid == false)
             {
                 return View(model3DVM);
@@ -91,7 +146,7 @@ namespace ModelShop.Controllers
                     FileSource = result2.Url.ToString(),
                     CreatedDate = DateTime.Now,
                     OwnerID = _userManager.GetUserId(User),
-                    ModelCategoryID = 2
+                    ModelCategoryID = model3DVM.ModelCategoryID
                 };
 
                 _model3DRepository.Insert(model);
@@ -118,7 +173,12 @@ namespace ModelShop.Controllers
             var model = _model3DRepository.Get(id);
 
             if (model == null)
-                NotFound();
+                return BadRequest("Model not found!");
+
+            // check is have access or not
+            //var client =  .Get(_userManager.GetUserId(User));
+
+
 
             await _photoService.DeletePhotoAsync(model.ImageSource);
             _model3DRepository.Delete(model);

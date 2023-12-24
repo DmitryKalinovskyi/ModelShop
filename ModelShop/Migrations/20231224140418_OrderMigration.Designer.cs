@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ModelShop.Data;
 
@@ -11,9 +12,11 @@ using ModelShop.Data;
 namespace ModelShop.Migrations
 {
     [DbContext(typeof(ModelShopContext))]
-    partial class ModelShopContextModelSnapshot : ModelSnapshot
+    [Migration("20231224140418_OrderMigration")]
+    partial class OrderMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -274,6 +277,26 @@ namespace ModelShop.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("ModelShop.Models.Client_Model3D", b =>
+                {
+                    b.Property<string>("ClientID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Model3DID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ClientID", "Model3DID");
+
+                    b.HasIndex("Model3DID");
+
+                    b.HasIndex("OrderID");
+
+                    b.ToTable("Client_Models3D");
+                });
+
             modelBuilder.Entity("ModelShop.Models.Model3D", b =>
                 {
                     b.Property<int>("Model3DID")
@@ -347,33 +370,12 @@ namespace ModelShop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderID"));
 
-                    b.Property<string>("ClientID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("OrderID");
 
-                    b.HasIndex("ClientID");
-
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("ModelShop.Models.Order_Model3D", b =>
-                {
-                    b.Property<int>("OrderID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Model3DID")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrderID", "Model3DID");
-
-                    b.HasIndex("Model3DID");
-
-                    b.ToTable("Client_Models3D");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -457,6 +459,33 @@ namespace ModelShop.Migrations
                     b.Navigation("Model3D");
                 });
 
+            modelBuilder.Entity("ModelShop.Models.Client_Model3D", b =>
+                {
+                    b.HasOne("ModelShop.Models.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ModelShop.Models.Model3D", "Model3D")
+                        .WithMany()
+                        .HasForeignKey("Model3DID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ModelShop.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Model3D");
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("ModelShop.Models.Model3D", b =>
                 {
                     b.HasOne("ModelShop.Models.ModelCategory", "ModelCategory")
@@ -472,36 +501,6 @@ namespace ModelShop.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("ModelShop.Models.Order", b =>
-                {
-                    b.HasOne("ModelShop.Models.Client", "Client")
-                        .WithMany("Orders")
-                        .HasForeignKey("ClientID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Client");
-                });
-
-            modelBuilder.Entity("ModelShop.Models.Order_Model3D", b =>
-                {
-                    b.HasOne("ModelShop.Models.Model3D", "Model3D")
-                        .WithMany()
-                        .HasForeignKey("Model3DID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ModelShop.Models.Order", "Order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Model3D");
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("ModelShop.Models.Cart", b =>
                 {
                     b.Navigation("Cart_Models3D");
@@ -511,19 +510,12 @@ namespace ModelShop.Migrations
                 {
                     b.Navigation("Cart");
 
-                    b.Navigation("Orders");
-
                     b.Navigation("OwnedModels3D");
                 });
 
             modelBuilder.Entity("ModelShop.Models.ModelCategory", b =>
                 {
                     b.Navigation("Models");
-                });
-
-            modelBuilder.Entity("ModelShop.Models.Order", b =>
-                {
-                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }
