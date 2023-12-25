@@ -10,5 +10,11 @@ namespace ModelShop.ViewModels
         public bool IsOwner { get; set; }
 
         public int Views { get; set; }
+
+        public bool Followed { get; set; }
+
+        public int Followings { get; set; }
+
+        public int Followers { get; set; }
     }
 }

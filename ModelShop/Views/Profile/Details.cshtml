@@ -13,33 +13,40 @@
                 @Model.Client.Lastname
             </div>
             <div class="d-flex align-items-center">
+                @if(User.Identity.IsAuthenticated)
+                {
                 <!-- if not your account -->
                 @if(Model.IsOwner == false)
                 {
-                    <!-- not followed -->
-                    <button class="btn btn-primary">Follow</button>
-
-                    <!-- followed -->
-                    <button class="btn btn-primary">Unfollow</button>
+                    @if(Model.Followed == false)
+                    {
+                        <!-- not followed -->
+                        <form asp-action="Follow" asp-controller="Profile" asp-route-id="@Model.Client.Id">
+                            <button class="btn btn-primary">Follow</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <!-- followed -->
+                        <form asp-action="Unfollow" asp-controller="Profile" asp-route-id="@Model.Client.Id">
+                            <button class="btn btn-primary">Unfollow</button>
+                        </form>
+                    }
                 }
                 else
                 { 
-                    @*<form asp-action="Edit" asp-controller="Profile">
-                        <button class="btn btn-primary">Edit profile</button>
-                    </form>
-*@
                     <!-- your account -->
                     <a asp-action="Edit" asp-controller="Profile" class="btn btn-primary" role="button">
                         Edit profile 
                     </a>
-
+                }
                 }
 
                 <div class="ps-3 text-light d-flex align-items-center">
-                    Followers 23
+                    Followers @Model.Followers
                 </div>
                 <div class="ps-3 text-light">
-                    Following 10
+                    Following @Model.Followings
                 </div>
             </div>
         </div>

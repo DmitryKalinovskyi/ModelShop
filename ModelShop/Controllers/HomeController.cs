@@ -13,6 +13,8 @@ namespace ModelShop.Controllers
         private readonly IModel3DRepository _model3DRepository;
         private readonly IModelCategoryRepository _modelCategoryRepository;
 
+        private const int PAGE_SIZE = 8;
+
         public HomeController(IModel3DRepository model3DRepository,
             IModelCategoryRepository modelCategoryRepository,
             ILogger<HomeController> logger)
@@ -22,37 +24,56 @@ namespace ModelShop.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            var viewModel = new IndexViewModel
-            { 
-                Models3D = await _model3DRepository.GetAllAsync(),
-                ModelCategories = await _modelCategoryRepository.GetAllAsync(),
-                IsFindResult = false
-            };
+        //public async Task<IActionResult> Index(IndexViewModel indexViewModel, int? id)
+        //{
+        //    //if (indexViewModel != null) return View(indexViewModel);
 
-            return View(viewModel);
-        }
+        //    //var models = (await _model3DRepository.GetAllAsync()).AsQueryable();
+        //    //indexViewModel.ModelCategories = await _modelCategoryRepository.GetAllAsync();
+        //    //indexViewModel.IsFindResult = false;
+        //    //indexViewModel.Page = id ?? 1;
+        //    //indexViewModel.PageCount = (int)Math.Ceiling((double)models.Count() / PAGE_SIZE);
+        //    //indexViewModel.Models3D = models.Skip(((id ?? 1) - 1) * PAGE_SIZE).Take(PAGE_SIZE).ToList();
 
+        //    return View(indexViewModel);
+        //}
+
+        [HttpGet]
         [HttpPost]
         public async Task<IActionResult> IndexAsync(IndexViewModel indexViewModel)
         {
             indexViewModel.Models3D = await _model3DRepository
                 .SearchAsync(indexViewModel.Search, indexViewModel.MinPrice, indexViewModel.MaxPrice);
 
-            indexViewModel.Models3D = indexViewModel.OrderBy switch
+            //if (id.HasValue) indexViewModel.Page = (int)id;
+            if (Request.Method == "POST")
             {
-                OrderBy.Date => indexViewModel.Models3D.OrderBy(m => m.CreatedDate),
-                OrderBy.DateDescending => indexViewModel.Models3D.OrderByDescending(m => m.CreatedDate),
-                OrderBy.Views => indexViewModel.Models3D.OrderBy(m => m.Views),
-                OrderBy.ViewsDescending => indexViewModel.Models3D.OrderByDescending(m => m.Views),
-                OrderBy.Price => indexViewModel.Models3D.OrderBy(m => m.Price),
-                OrderBy.PriceDescending => indexViewModel.Models3D.OrderByDescending(m => m.Price)
+                indexViewModel.IsFindResult = true;
+                indexViewModel.ResultsCount = indexViewModel.Models3D.Count();
+            }
+
+            var models = indexViewModel.OrderBy switch
+            {
+                OrderBy.Date => indexViewModel.Models3D.AsQueryable().OrderBy(m => m.CreatedDate),
+                OrderBy.DateDescending => indexViewModel.Models3D.AsQueryable().OrderByDescending(m => m.CreatedDate),
+                OrderBy.Views => indexViewModel.Models3D.AsQueryable().OrderBy(m => m.Views),
+                OrderBy.ViewsDescending => indexViewModel.Models3D.AsQueryable().OrderByDescending(m => m.Views),
+                OrderBy.Price => indexViewModel.Models3D.AsQueryable().OrderBy(m => m.Price),
+                OrderBy.PriceDescending => indexViewModel.Models3D.AsQueryable().OrderByDescending(m => m.Price),
+                _ => indexViewModel.Models3D.AsQueryable().OrderBy(m => m.CreatedDate)
             };
+
+            // divide into pages
+            indexViewModel.PageCount = (int)Math.Ceiling((double)models.Count() / PAGE_SIZE);
+
+            //this line causes timeout
+            indexViewModel.Models3D = models.Skip((indexViewModel.Page - 1) * PAGE_SIZE)
+                .Take(PAGE_SIZE).ToList();
+
+            //if (id != null) indexViewModel.Page = (int)id;
 
 
             indexViewModel.ModelCategories = await _modelCategoryRepository.GetAllAsync();
-            indexViewModel.IsFindResult = true;
             //indexViewModel.MinPrice = 
             return View(indexViewModel);
         }

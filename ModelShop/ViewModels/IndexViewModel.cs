@@ -36,6 +36,14 @@ namespace ModelShop.ViewModels
         public decimal MaxPrice { get; set; } = 100000;
 
         public bool IsFindResult { get; set; }
+
+        //public int PageSize { get; set; }
+
+        public int Page { get; set; } = 1;
+
+        public int PageCount { get; set; }
+
+        public int ResultsCount { get; set; }
         //public int Page { get; set }
     }
 }

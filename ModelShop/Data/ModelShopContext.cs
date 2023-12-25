@@ -28,6 +28,8 @@ namespace ModelShop.Data
 
         public DbSet<Order_Model3D> Client_Models3D { get; set; }
 
+        public DbSet<ClientFollower> ClientFollowers { get; set; }
+
 
         //public DbSet<ModelFile> ModelFiles{ get; set; }
 

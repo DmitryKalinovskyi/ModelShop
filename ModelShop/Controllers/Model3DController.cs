@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Abstractions;
 using ModelShop.Data.Contracts;
 using ModelShop.Models;
 using ModelShop.Services;
@@ -7,6 +9,7 @@ using ModelShop.ViewModels;
 
 namespace ModelShop.Controllers
 {
+    [Authorize]
     public class Model3DController : Controller
     {
         private readonly IModel3DRepository _model3DRepository;
@@ -63,6 +66,51 @@ namespace ModelShop.Controllers
             };
 
             return View(viewModel);
+        }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id.HasValue == false) return BadRequest();
+
+            var model = _model3DRepository.Get((int)id);
+            if (model == null) return BadRequest();
+
+            var viewModel = new Model3DEditViewModel
+            {
+                Title = model.Title,
+                Description = model.Description,
+                Price = model.Price,
+                ModelCategoryID = model.ModelCategoryID,
+                ModelCategories = _modelCategoryRepository.GetAll()
+            };
+
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Model3DEditViewModel viewModel, int? id)
+        {
+            if (id.HasValue == false) return BadRequest();
+
+            var model = _model3DRepository.Get((int)id);
+            if (model == null) return BadRequest();
+
+            if(ModelState.IsValid == false)
+            {
+                viewModel.ModelCategories = _modelCategoryRepository.GetAll();
+                return View(viewModel);
+            }
+
+            //var viewModel = new Model3DEditViewModel
+            model.Title = viewModel.Title;
+            model.Description = viewModel.Description;
+            model.Price = viewModel.Price;
+            model.ModelCategoryID = viewModel.ModelCategoryID;
+
+            _model3DRepository.Save();
+
+            return RedirectToAction("Details", "Model3D", new {id});
         }
 
         [HttpPost]
@@ -142,8 +190,8 @@ namespace ModelShop.Controllers
                     Title = model3DVM.Title,
                     Price = model3DVM.Price,
                     Description = model3DVM.Description,
-                    ImageSource = result.Url.ToString(),
-                    FileSource = result2.Url.ToString(),
+                    ImageSource = result.Url?.ToString(),
+                    FileSource = result2.Url?.ToString(),
                     CreatedDate = DateTime.Now,
                     OwnerID = _userManager.GetUserId(User),
                     ModelCategoryID = model3DVM.ModelCategoryID

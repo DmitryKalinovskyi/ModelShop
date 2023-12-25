@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ModelShop.Models
 {
@@ -28,9 +29,10 @@ namespace ModelShop.Models
         
         public Cart? Cart { get; set; }
 
+        [InverseProperty("Follower")]
+        public ICollection<ClientFollower>? Followers { get; set; }
 
-        //public IEnumerable<ClientFollower> Followers { get; set; }  
-
-        //public IEnumerable<ClientFollower> Following { get; set; }
+        [InverseProperty("Following")]
+        public ICollection<ClientFollower>? Followings { get; set; }
     }
 }

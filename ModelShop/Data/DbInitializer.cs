@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using ModelShop.Data.Contracts;
 using ModelShop.Models;
 using System.Diagnostics;
 using System.Net;
@@ -59,8 +60,8 @@ namespace ModelShop.Data
                         Lastname = "Kalinovskyi",
                         Email = adminUserEmail,
                         EmailConfirmed = true,
-                        Description = "Admin profile"
-
+                        Description = "Admin profile",
+                        Cart = new Cart()
                     };
                     await userManager.CreateAsync(newAdminUser, "Coding@1234?");
                     await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);

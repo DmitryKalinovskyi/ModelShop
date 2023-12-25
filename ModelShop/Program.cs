@@ -25,10 +25,12 @@ builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<ICart_Model3DRepository, Cart_Model3DRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrder_Model3DRepository, Order_Model3DRepository>();
+builder.Services.AddScoped<IClientFollowerRepository, ClientFollowerRepository>();
 
 // Other services
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IFollowingService, FollowingService>();
 
 // Add PhotoService
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));

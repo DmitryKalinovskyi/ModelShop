@@ -82,8 +82,11 @@
                     </a>
                 }
 
-                @if(Model.IsOwner){
+                @if(Model.IsOwner || User.IsInRole("admin")){
                     @*if author or have deletion rules*@
+                    <a class="ms-2 btn btn-primary" asp-controller="Model3D" asp-action="Edit" asp-route-id="@Model.Model3D.Model3DID" method="post">
+                        Edit
+                    </a>
                     <form class="ms-2" asp-controller="Model3D" asp-action="Delete" asp-route-id="@Model.Model3D.Model3DID" method="post">
                         <button class="btn btn-primary ">Delete</button>
                     </form>
