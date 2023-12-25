@@ -4,7 +4,7 @@
     ViewData["Title"] = "Home Page";
 }
 
-<form asp-controller="Home" asp-action="Index">
+<form asp-controller="Home" asp-action="Index" method="post">
 <div class="container">
         <div class="input-group rounded">
             <input type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon"
@@ -18,11 +18,25 @@
 
         <div class="row g-3 mt-2">
             <div class="col-auto">
-                <select class="form-control">
-                    <option selected>All categories</option>
+                <select class="form-control" asp-for="ModelCategoryID" onchange="this.form.submit()">
+                    @if(Model.ModelCategoryID == -1)
+                    {
+                        <option selected value="-1">All categories</option>
+                    }
+                    else
+                    {
+                        <option value="-1">All categories</option>
+                    }
+
                     @foreach (var category in Model.ModelCategories)
                     {
-                        <option value="@category.Name">@category.Name</option>
+                        if(Model.ModelCategoryID == category.ModelCategoryID)
+                        {
+                            <option selected value="@category.ModelCategoryID">@category.Name</option>
+                        }
+                        else{
+                            <option value="@category.ModelCategoryID">@category.Name</option>
+                        }
                     }
                 </select>
             </div>

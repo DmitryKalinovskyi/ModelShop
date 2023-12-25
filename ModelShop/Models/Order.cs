@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ModelShop.Models
@@ -12,6 +13,9 @@ namespace ModelShop.Models
         public string ClientID { get; set; }
 
         public DateTime? CreatedDate { get; set; }
+
+        [Precision(18, 2)]
+        public decimal TotalPrice { get; set; }
 
         // reference navigation
 

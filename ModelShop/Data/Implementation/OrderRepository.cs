@@ -19,12 +19,20 @@ namespace ModelShop.Data.Implementation
 
         public ICollection<Order> GetAll()
         {
-            return _context.Orders.ToList();
+            return _context.Orders
+                .Include(o => o.Client)
+				.Include(o => o.OrderItems)
+				.ThenInclude(oi => oi.Model3D)
+				.ToList();
         }
 
         public async Task<ICollection<Order>> GetAllAsync()
         {
-            return await _context.Orders.ToListAsync();
+            return await _context.Orders
+                .Include(o => o.Client)
+				.Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Model3D)
+				.ToListAsync();
         }
 
         public void Insert(Order entity)

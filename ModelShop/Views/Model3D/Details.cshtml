@@ -56,8 +56,12 @@
                 </h4>
             </div>
             <div class="d-flex align-items-center">
-                <div>@Model.Model3D.Price$</div>
-                @if(Model.IsOwner == false && Model.IsOwned == false){
+                @if(Model.IsOwned == false)
+                {
+                    <div>@Model.Model3D.Price$</div>
+                }
+                @if (Model.IsOwner == false && Model.IsOwned == false && User.IsInRole("admin") == false)
+                {
 
                     @if (Model.IsInCart)
                     {
@@ -72,7 +76,8 @@
                         </form>
                     }
                 }
-                else
+
+                @if(Model.IsOwner || User.IsInRole("admin") || Model.IsOwned)
                 {
                     <!-- if owned -->
                     <a href="@Model.Model3D.FileSource" target="_blank" class="btn btn-primary ms-2" role="button">

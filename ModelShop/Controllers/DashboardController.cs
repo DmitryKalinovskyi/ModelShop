@@ -27,7 +27,7 @@ namespace ModelShop.Controllers
 
         public IActionResult Index()
         {
-            var client = _clientRepository.GetById(_userManager.GetUserId(User)); 
+            var client = _clientRepository.GetById(_userManager.GetUserId(User));
             var viewModel = new DashboardViewModel
             {
                 OrderedModels = _orderService.GetOrderedModels3D(client.Id),

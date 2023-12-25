@@ -42,15 +42,17 @@ namespace ModelShop.Controllers
         [HttpPost]
         public async Task<IActionResult> IndexAsync(IndexViewModel indexViewModel)
         {
-            indexViewModel.Models3D = await _model3DRepository
-                .SearchAsync(indexViewModel.Search, indexViewModel.MinPrice, indexViewModel.MaxPrice);
-
             //if (id.HasValue) indexViewModel.Page = (int)id;
             if (Request.Method == "POST")
             {
                 indexViewModel.IsFindResult = true;
-                indexViewModel.ResultsCount = indexViewModel.Models3D.Count();
+                return RedirectToAction("Index", "Home", indexViewModel);
             }
+
+            indexViewModel.Models3D = await _model3DRepository
+                .SearchAsync(indexViewModel.Search, indexViewModel.ModelCategoryID, indexViewModel.MinPrice, indexViewModel.MaxPrice);
+            
+            indexViewModel.ResultsCount = indexViewModel.Models3D.Count();
 
             var models = indexViewModel.OrderBy switch
             {

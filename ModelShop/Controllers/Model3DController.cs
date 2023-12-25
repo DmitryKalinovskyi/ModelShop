@@ -89,7 +89,7 @@ namespace ModelShop.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Model3DEditViewModel viewModel, int? id)
+        public async Task<IActionResult> Edit(Model3DEditViewModel viewModel, int? id)
         {
             if (id.HasValue == false) return BadRequest();
 
@@ -102,13 +102,40 @@ namespace ModelShop.Controllers
                 return View(viewModel);
             }
 
-            //var viewModel = new Model3DEditViewModel
-            model.Title = viewModel.Title;
+			//var viewModel = new Model3DEditViewModel
+			model.Title = viewModel.Title;
             model.Description = viewModel.Description;
             model.Price = viewModel.Price;
             model.ModelCategoryID = viewModel.ModelCategoryID;
 
-            _model3DRepository.Save();
+            if (viewModel.Image != null)
+            {
+                try
+                {
+			        var result = await _photoService.AddPhotoAsync(viewModel.Image);
+                    if(result.Error == null)
+                    {
+                        model.ImageSource = result.Url.ToString();
+                    }
+                }
+                catch
+                {
+                }
+            }
+
+            if(viewModel.File != null)
+            {
+                try
+                {
+			        var result2 = await _fileService.AddFileAsync(viewModel.File);
+                    if(result2.Error == null)
+                    {
+                        model.FileSource = result2.Url.ToString();
+                    }
+                }catch{ }
+            }
+
+			_model3DRepository.Save();
 
             return RedirectToAction("Details", "Model3D", new {id});
         }

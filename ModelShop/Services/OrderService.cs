@@ -43,7 +43,8 @@ namespace ModelShop.Services
             };
             _orderRepository.Insert(order);
 
-            // assing to client new models
+            // assing to client new models and accumulate they price
+            decimal accumulated = 0;
             foreach (var item in cart.Cart_Models3D)
             {
                 _order_Model3DRepository.Insert(new Order_Model3D
@@ -52,8 +53,12 @@ namespace ModelShop.Services
                     Model3DID = item.Model3DID
                 });
 
+                accumulated += item.Model3D.Price;
+
                 _cart_Model3DRepository.Delete(item);
             }
+
+            order.TotalPrice = accumulated;
 
             _orderRepository.Save();
 

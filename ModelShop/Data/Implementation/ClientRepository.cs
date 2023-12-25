@@ -125,6 +125,7 @@ namespace ModelShop.Data.Implementation
             .Include(c => c.Orders)
                 .ThenInclude(o => o.OrderItems)
                     .ThenInclude(oi => oi.Model3D)
+                        .ThenInclude(m => m.Owner)
             .FirstOrDefault(c => c.Id == clientId);
 
             if (client != null)

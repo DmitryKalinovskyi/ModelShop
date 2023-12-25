@@ -37,6 +37,7 @@ namespace ModelShop.ViewModels
 
         public bool IsFindResult { get; set; }
 
+        public int ModelCategoryID { get; set; } = -1;
         //public int PageSize { get; set; }
 
         public int Page { get; set; } = 1;

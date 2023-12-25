@@ -66,12 +66,13 @@ namespace ModelShop.Data.Implementation
             _context.SaveChanges();
         }
 
-        public async Task<IEnumerable<Model3D>> SearchAsync(string? search, decimal minPrice, decimal maxPrice)
+        public async Task<IEnumerable<Model3D>> SearchAsync(string? search, int modelCategoryID = -1, decimal minPrice = 0, decimal maxPrice = 1000000)
         {
             search = search == null ? "" : search;
             search = search.ToLower();
             return await _context.Models3D
-                .Where(m => m.Title.ToLower().Contains(search) && m.Price >= minPrice && m.Price <= maxPrice)
+                .Where(m => m.Title.ToLower().Contains(search) && m.Price >= minPrice && m.Price <= maxPrice && 
+                (modelCategoryID == -1 || m.ModelCategoryID == modelCategoryID))
                 .Include(m => m.Owner)
                 .ToListAsync();
         }

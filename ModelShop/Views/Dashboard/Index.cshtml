@@ -9,10 +9,35 @@
 	</h4>
 
 	<div class="row">
-		@foreach(var owned in Model.OwnedModels){
-			<div>
-				@owned.Title
-			</div>
-		}
+        @foreach (var model3d in Model.OrderedModels)
+        {
+            <div class="col-12 col-md-6 col-xl-3 mt-4">
+                <div class="card">
+                    <a asp-controller="Model3D" asp-action="Details" asp-route-id="@model3d.Model3DID" class="text-decoration-none">
+                        <img src="@model3d.ImageSource" class="card-img-top" alt="...">
+                    </a>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <h5>
+                                @model3d.Title
+                            </h5>
+                            <h6 style="color: #F65A5A">
+                                @(model3d.Price == 0 ? "Free" : $"{model3d.Price}$")
+                            </h6>
+                        </div>
+
+                        <div class="d-flex">
+                            <div class="card-footer-left">
+                                <a class="card-profile" asp-controller="Profile" asp-action="Details" asp-route-id="@model3d.OwnerID">@@@model3d.Owner.UserName</a>
+                            </div>
+                            <div class="card-footer-right">
+                                <div><i class="bi bi-eye"> </i>@model3d.Views</div>
+                                @*<div><i class="bi bi-chat"> </i>count</div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
 	</div>
 </div>
