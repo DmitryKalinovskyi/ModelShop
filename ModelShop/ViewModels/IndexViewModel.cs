@@ -12,13 +12,6 @@ namespace ModelShop.ViewModels
         PriceDescending
     }
 
-    public enum Criteria 
-    {
-        Default,
-        Owned,
-    }
-
-
     public class IndexViewModel
     {
         public IEnumerable<Model3D> Models3D { get; set; }

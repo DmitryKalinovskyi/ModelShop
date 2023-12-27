@@ -52,28 +52,6 @@ namespace ModelShop.Controllers
                 return View(loginViewModel);
             }
 
-
-
-            //var client = await _clientRepository.GetByIdAsync(loginViewModel.Email);
-
-            //if (client == null)
-            //{
-            //    ModelState.AddModelError("Username", "User with this username don't exist!");
-            //    return View(loginViewModel);
-            //}
-
-            //// check is valid login, if valid add to cookies as logined
-            //var passwordHash = PasswordHasher.Hash(loginViewModel.Password);
-            //if (passwordHash != client.PasswordHash)
-            //{
-            //    ModelState.AddModelError("Password", "Incorrect password!");
-            //    return View(loginViewModel);
-            //}
-
-            //HttpContext.Session.SetString("username", loginViewModel.Username);
-            //HttpContext.Session.SetString("passwoordHash", passwordHash);
-
-
             return RedirectToAction("Index", "Home");
         }
 

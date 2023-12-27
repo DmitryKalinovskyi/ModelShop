@@ -29,19 +29,5 @@ namespace ModelShop.Data
         public DbSet<Order_Model3D> Client_Models3D { get; set; }
 
         public DbSet<ClientFollower> ClientFollowers { get; set; }
-
-
-        //public DbSet<ModelFile> ModelFiles{ get; set; }
-
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<ModelCategory>().ToTable("ModelCategories");
-
-        //    modelBuilder.Entity<Model3D>().ToTable("Models3D");
-        //       //.HasOne(m => m.ModelCategory)
-        //       //.WithMany(mc => mc.Models)
-        //       //.HasForeignKey(m => m.ModelCategoryID);
-        //}
     }
 }

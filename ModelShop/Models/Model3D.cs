@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ModelShop.Models
 {
+    [Index(nameof(Title))]
     public class Model3D
     {
         [Key]
